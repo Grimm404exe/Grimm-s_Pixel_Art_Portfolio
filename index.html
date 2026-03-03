@@ -6,8 +6,28 @@
     <title>Grimm's Portfolio</title>
     <!-- Google Fonts: Press Start 2P -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- 0. BOOTSTRAP SCRIPTS: Defined at the top to fix ReferenceError -->
+    <script>
+        function handleImageError(img) {
+            const extensions = ['.png', '.gif', '.jpg', '.jpeg'];
+            const base = img.getAttribute('data-base') || img.src.substring(0, img.src.lastIndexOf('.'));
+            
+            if (!img.retryCount) img.retryCount = 0;
+            
+            if (img.retryCount < extensions.length) {
+                const nextExt = extensions[img.retryCount];
+                img.retryCount++;
+                img.src = base + nextExt; 
+            } else {
+                img.onerror = null; 
+                img.parentElement.innerHTML = `<span style="font-size:10px; color:#ff5555;">[MISSING: ${base}]</span>`;
+            }
+        }
+    </script>
+
     <style>
-        /* --- 1. CORE STYLES --- */
+        /* --- 1. CORE STYLES & CENTERING --- */
         html {
             scroll-behavior: auto; 
         }
@@ -70,7 +90,7 @@
             to { background-position: 0 -1200px; }
         }
 
-        /* --- 2. CLEAN NAVIGATION (No Box) --- */
+        /* --- 2. CLEAN NAVIGATION --- */
         .nav-click-me {
             background: none;
             border: none;
@@ -82,11 +102,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 15px;
             transition: transform 0.3s ease, color 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+            margin: 0 auto; /* Ensure centering in blocks */
         }
 
         .nav-click-me:hover {
@@ -98,9 +120,10 @@
             transform: scale(0.9);
         }
 
-        /* --- 3. SECTIONS --- */
+        /* --- 3. SECTIONS CONFIG --- */
         .entrance-screen, .info-section, .art-links-section, .footer-section {
             min-height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -108,10 +131,14 @@
             text-align: center;
             padding: 60px 20px;
             box-sizing: border-box;
+            position: relative;
         }
 
         .title-float {
             animation: initialFade 4s forwards, smooth-float 4s infinite ease-in-out 4s; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .pixel-title {
@@ -142,6 +169,9 @@
         .info-container {
             max-width: 1100px;
             margin-bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .pixel-text {
@@ -198,7 +228,7 @@
         .links-grid {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             flex-wrap: wrap;
             gap: 60px;
             max-width: 1200px;
@@ -242,7 +272,7 @@
             margin-top: 20px;
         }
 
-        /* --- 7. GALLERY OVERLAY --- */
+        /* --- 7. GALLERY MODAL --- */
         .gallery-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -317,6 +347,7 @@
             .pixel-title { font-size: 1.8rem; letter-spacing: 4px; }
             .section-heading { font-size: 2.2rem !important; }
             .pixel-text { font-size: 0.8rem; }
+            .nav-click-me { padding: 20px; font-size: 0.6rem; }
             .links-grid { gap: 30px; }
             .link-item { width: 140px; }
             .pixel-arrow { width: 30px; height: 18px; }
@@ -330,12 +361,12 @@
         <div class="hero-content title-float">
             <h1 class="pixel-title">GRIMM'S</h1>
             <div class="gif-container">
-                <img src="cat.gif" alt="Angy Catto" class="pixel-gif" onerror="this.style.display='none'; this.parentElement.innerText='[CAT.GIF]';">
+                <img src="cat.gif" alt="Angy Catto" class="pixel-gif" data-base="cat" onerror="handleImageError(this)">
             </div>
             <h1 class="pixel-title">PORTFOLIO</h1>
         </div>
         
-        <div id="scroll-prompt" class="hidden">
+        <div id="scroll-prompt" class="hidden" style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);">
             <button class="nav-click-me" onclick="elevatorScroll('info')">
                 <span>Click Me To Start</span>
                 <div class="pixel-arrow" style="animation: bounce-prompt 1.5s infinite ease-in-out;"></div>
@@ -359,43 +390,43 @@
         </button>
     </section>
 
-    <!-- SECTION 3: ART CATEGORIES -->
+    <!-- SECTION 3: ART GRID -->
     <section class="art-links-section" id="art">
         <h2 class="pixel-title section-heading">ART</h2>
         <div class="links-grid">
             <div class="link-item" onclick="openGallery('pokemon')">
                 <div class="pixel-icon-container">
-                    <img src="pokemon.png" alt="Pokemon Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                    <img src="pokemon.png" alt="Pokemon Art" class="custom-art" data-base="pokemon" onerror="handleImageError(this)">
                 </div>
-                <p class="pixel-text link-label">Pokemon</p>
+                <p class="pixel-text link-label" style="font-size: 0.7rem;">Pokemon</p>
             </div>
             
             <div class="link-item" onclick="openGallery('commissions')">
                 <div class="pixel-icon-container">
-                    <img src="commissions.png" alt="Commissions Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                    <img src="commissions.png" alt="Commissions Art" class="custom-art" data-base="commissions" onerror="handleImageError(this)">
                 </div>
-                <p class="pixel-text link-label">Commisions</p>
+                <p class="pixel-text link-label" style="font-size: 0.7rem;">Commisions</p>
             </div>
 
             <div class="link-item" onclick="openGallery('silly')">
                 <div class="pixel-icon-container">
-                    <img src="silly.png" alt="Silly Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                    <img src="silly.png" alt="Silly Art" class="custom-art" data-base="silly" onerror="handleImageError(this)">
                 </div>
-                <p class="pixel-text link-label">Silly</p>
+                <p class="pixel-text link-label" style="font-size: 0.7rem;">Silly</p>
             </div>
 
             <div class="link-item" onclick="openGallery('fav')">
                 <div class="pixel-icon-container">
-                    <img src="fav.png" alt="Favorite Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                    <img src="fav.png" alt="Favorite Art" class="custom-art" data-base="fav" onerror="handleImageError(this)">
                 </div>
-                <p class="pixel-text link-label">My_fav</p>
+                <p class="pixel-text link-label" style="font-size: 0.7rem;">My_fav</p>
             </div>
 
             <div class="link-item" onclick="openGallery('bonus')">
                 <div class="pixel-icon-container">
-                    <img src="bonus.png" alt="Bonus Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                    <img src="bonus.png" alt="Bonus Art" class="custom-art" data-base="bonus" onerror="handleImageError(this)">
                 </div>
-                <p class="pixel-text link-label">Bonus</p>
+                <p class="pixel-text link-label" style="font-size: 0.7rem;">Bonus</p>
             </div>
         </div>
         <button class="nav-click-me" onclick="elevatorScroll('thanks')">
@@ -421,7 +452,7 @@
         <div class="gallery-container">
             <div class="close-gallery" onclick="closeGallery()">[ CLOSE ]</div>
             <button class="nav-btn" style="left: -80px;" onclick="changeImage(-1)"><</button>
-            <div id="gallery-loader" class="gallery-status" style="position:absolute;">LOADING...</div>
+            <div id="gallery-loader" class="gallery-status" style="position:absolute;">LOADING PIXELS...</div>
             <img id="gallery-img" src="" alt="Gallery Image">
             <button class="nav-btn" style="right: -80px;" onclick="changeImage(1)">></button>
         </div>
@@ -490,7 +521,6 @@
 
         let currentGallery = [];
         let currentIndex = 0;
-        let hasRetried = false; 
 
         const imgElement = document.getElementById('gallery-img');
         const loader = document.getElementById('gallery-loader');
@@ -501,21 +531,32 @@
             imgElement.style.display = 'block';
         };
 
-        imgElement.onerror = () => {
-            if (!hasRetried) {
-                hasRetried = true;
-                const currentSrc = imgElement.src;
-                let newSrc = currentSrc.endsWith('.png') ? currentSrc.replace('.png', '.gif') : currentSrc.replace('.gif', '.png');
-                imgElement.src = newSrc;
-                return;
+        // Custom Smart Error Handler for Gallery Images
+        imgElement.onerror = function() {
+            const extensions = ['.png', '.gif', '.jpg', '.jpeg'];
+            const currentPath = currentGallery[currentIndex];
+            
+            if (!currentPath) return;
+            
+            const base = currentPath.substring(0, currentPath.lastIndexOf('.'));
+            
+            if (!this.retryIdx) this.retryIdx = 0;
+            
+            if (this.retryIdx < extensions.length) {
+                const nextExt = extensions[this.retryIdx];
+                this.retryIdx++;
+                imgElement.src = base + nextExt;
+            } else {
+                loader.innerText = "FAILED TO LOAD";
+                this.retryIdx = 0; 
             }
-            loader.innerText = "FAILED TO LOAD";
         };
 
         function openGallery(category) {
             currentGallery = galleries[category] || [];
             if (currentGallery.length === 0) return;
             currentIndex = 0;
+            imgElement.retryIdx = 0; 
             galleryMsg.innerText = (category === 'bonus') ? "Guess what I made here !, dm me the answers if you can lol" : "";
             updateGalleryUI();
             document.getElementById('gallery-overlay').style.display = 'flex';
@@ -529,14 +570,14 @@
 
         function changeImage(step) {
             currentIndex = (currentIndex + step + currentGallery.length) % currentGallery.length;
+            imgElement.retryIdx = 0; 
             updateGalleryUI();
         }
 
         function updateGalleryUI() {
-            hasRetried = false; 
             imgElement.style.display = 'none';
             loader.style.display = 'block';
-            loader.innerText = "LOADING...";
+            loader.innerText = "LOADING PIXELS...";
             imgElement.src = currentGallery[currentIndex];
             document.getElementById('gallery-counter').innerText = `IMAGE ${currentIndex + 1} / ${currentGallery.length}`;
         }
