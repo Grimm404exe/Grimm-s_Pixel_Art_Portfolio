@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grimm's Portfolio</title>
+    <!-- Google Fonts: Press Start 2P -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. CORE STYLES --- */
+        html {
+            scroll-behavior: auto; 
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a2a6c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c31432;
+            border: 2px solid #000;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f46b45;
+        }
+
+        body {
+            background: linear-gradient(180deg, #1a2a6c 0%, #b21f1f 100%);
+            background-size: 100% 200%;
+            background-attachment: fixed;
+            background-position: 0% 0%;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: hidden; /* Initially locked for intro */
+            position: relative;
+            transition: background-position 0.2s ease-out;
+        }
+
+        /* Star Layers */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 150px 40px, #fff, transparent),
+                radial-gradient(2px 2px at 400px 100px, #ffd700, transparent),
+                radial-gradient(1.5px 1.5px at 600px 500px, #fff, transparent);
+            background-size: 800px 800px;
+            animation: infiniteSpace 100s linear infinite;
+            opacity: 1.0; 
+        }
+        body::after {
+            z-index: -1;
+            background-size: 600px 600px;
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+            animation: infiniteSpace 40s linear infinite;
+            opacity: 0.95;
+        }
+
+        @keyframes infiniteSpace {
+            from { background-position: 0 0; }
+            to { background-position: 0 -1200px; }
+        }
+
+        /* --- 2. CLEAN NAVIGATION (No Box) --- */
+        .nav-click-me {
+            background: none;
+            border: none;
+            padding: 20px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-click-me:hover {
+            color: #55aaff;
+            transform: scale(1.1);
+        }
+
+        .nav-click-me:active {
+            transform: scale(0.9);
+        }
+
+        /* --- 3. SECTIONS --- */
+        .entrance-screen, .info-section, .art-links-section, .footer-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 20px;
+            box-sizing: border-box;
+        }
+
+        .title-float {
+            animation: initialFade 4s forwards, smooth-float 4s infinite ease-in-out 4s; 
+        }
+
+        .pixel-title {
+            color: #ffffff;
+            text-shadow: 6px 6px 0px #310a14;
+            font-size: 3.5rem; 
+            line-height: 1.2;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin: 15px 0;
+        }
+
+        .gif-container {
+            width: 180px;
+            margin: 20px auto;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pixel-gif {
+            width: 100%;
+            image-rendering: pixelated;
+        }
+
+        /* --- 4. BUSINESS INFO --- */
+        .info-container {
+            max-width: 1100px;
+            margin-bottom: 60px;
+        }
+
+        .pixel-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #fff;
+            text-shadow: 4px 4px 0px #310a14;
+            text-transform: uppercase;
+        }
+
+        .discord-handle { margin-bottom: 40px; }
+
+        .disclaimer-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .warning-badge {
+            font-size: 2rem;
+            background: #c31432;
+            color: #fff;
+            width: 70px; height: 70px;
+            display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
+        }
+
+        /* --- 5. ART GRID --- */
+        .section-heading {
+            position: relative;
+            margin-bottom: 100px;
+            font-size: 4rem !important;
+            display: inline-block;
+            text-shadow: 4px 4px 0px #310a14, 0 0 20px rgba(244, 107, 69, 0.4);
+            animation: smooth-float-heading 3s infinite ease-in-out;
+        }
+
+        .section-heading::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: -4px; 
+            width: calc(100% - 4px); 
+            height: 8px;
+            background: #fff;
+            box-shadow: 4px 4px 0px #310a14;
+        }
+
+        .links-grid {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 60px;
+            max-width: 1200px;
+            margin-bottom: 80px;
+        }
+
+        .link-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            width: 200px;
+        }
+
+        .link-item:hover { transform: translateY(-10px); }
+
+        .pixel-icon-container {
+            width: 120px; height: 120px;
+            display: flex; align-items: center; justify-content: center;
+            filter: drop-shadow(6px 6px 0px #310a14);
+            background: transparent; 
+        }
+
+        .custom-art {
+            max-width: 100%; max-height: 100%;
+            image-rendering: pixelated;
+        }
+
+        /* --- 6. FOOTER --- */
+        .footer-text {
+            max-width: 800px;
+            font-size: 1.1rem !important;
+            line-height: 1.6;
+        }
+
+        .blue-text {
+            color: #55aaff; 
+            display: block;
+            margin-top: 20px;
+        }
+
+        /* --- 7. GALLERY OVERLAY --- */
+        .gallery-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 85%;
+            max-width: 900px;
+            height: 75vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 8px solid #fff;
+            background: transparent; 
+            box-shadow: 0 0 40px rgba(244, 107, 69, 0.4);
+        }
+
+        #gallery-img {
+            max-width: 100%; max-height: 100%;
+            image-rendering: pixelated;
+            object-fit: contain;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            box-shadow: 4px 4px 0px #c31432;
+            z-index: 10;
+        }
+
+        .close-gallery {
+            position: absolute;
+            top: -60px; right: 0;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-shadow: 2px 2px 0px #c31432;
+        }
+
+        /* Visual Helpers */
+        .pixel-arrow {
+            width: 42px; height: 24px;
+            background: currentColor;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 25%, 85.7% 25%, 85.7% 50%, 71.4% 50%, 71.4% 75%, 57.1% 75%, 57.1% 100%, 42.8% 100%, 42.8% 75%, 28.5% 75%, 28.5% 50%, 14.2% 50%, 14.2% 25%, 0% 25%);
+        }
+
+        @keyframes initialFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes smooth-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+        @keyframes smooth-float-heading { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes bounce-prompt { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+        .hidden { opacity: 0; pointer-events: none; }
+        .fade-in-ui { opacity: 1; transition: opacity 1.5s ease-in; pointer-events: auto; }
+
+        @media (max-width: 800px) {
+            .pixel-title { font-size: 1.8rem; letter-spacing: 4px; }
+            .section-heading { font-size: 2.2rem !important; }
+            .pixel-text { font-size: 0.8rem; }
+            .links-grid { gap: 30px; }
+            .link-item { width: 140px; }
+            .pixel-arrow { width: 30px; height: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: INTRO -->
+    <section class="entrance-screen" id="intro">
+        <div class="hero-content title-float">
+            <h1 class="pixel-title">GRIMM'S</h1>
+            <div class="gif-container">
+                <img src="cat.gif" alt="Angy Catto" class="pixel-gif" onerror="this.style.display='none'; this.parentElement.innerText='[CAT.GIF]';">
+            </div>
+            <h1 class="pixel-title">PORTFOLIO</h1>
+        </div>
+        
+        <div id="scroll-prompt" class="hidden">
+            <button class="nav-click-me" onclick="elevatorScroll('info')">
+                <span>Click Me To Start</span>
+                <div class="pixel-arrow" style="animation: bounce-prompt 1.5s infinite ease-in-out;"></div>
+            </button>
+        </div>
+    </section>
+
+    <!-- SECTION 2: BUSINESS INFO -->
+    <section class="info-section" id="info">
+        <div class="info-container">
+            <p class="pixel-text discord-handle">Discord : Grimm_404</p>
+            
+            <div class="disclaimer-row">
+                <div class="warning-badge">!</div>
+                <p class="pixel-text">Prices are relatively cheap ! Let's talk business on discord !</p>
+            </div>
+        </div>
+        <button class="nav-click-me" onclick="elevatorScroll('art')">
+            <span>See My Art</span>
+            <div class="pixel-arrow"></div>
+        </button>
+    </section>
+
+    <!-- SECTION 3: ART CATEGORIES -->
+    <section class="art-links-section" id="art">
+        <h2 class="pixel-title section-heading">ART</h2>
+        <div class="links-grid">
+            <div class="link-item" onclick="openGallery('pokemon')">
+                <div class="pixel-icon-container">
+                    <img src="pokemon.png" alt="Pokemon Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                </div>
+                <p class="pixel-text link-label">Pokemon</p>
+            </div>
+            
+            <div class="link-item" onclick="openGallery('commissions')">
+                <div class="pixel-icon-container">
+                    <img src="commissions.png" alt="Commissions Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                </div>
+                <p class="pixel-text link-label">Commisions</p>
+            </div>
+
+            <div class="link-item" onclick="openGallery('silly')">
+                <div class="pixel-icon-container">
+                    <img src="silly.png" alt="Silly Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                </div>
+                <p class="pixel-text link-label">Silly</p>
+            </div>
+
+            <div class="link-item" onclick="openGallery('fav')">
+                <div class="pixel-icon-container">
+                    <img src="fav.png" alt="Favorite Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                </div>
+                <p class="pixel-text link-label">My_fav</p>
+            </div>
+
+            <div class="link-item" onclick="openGallery('bonus')">
+                <div class="pixel-icon-container">
+                    <img src="bonus.png" alt="Bonus Art" class="custom-art" onerror="this.style.display='none'; this.parentElement.innerText='ADD IMG';">
+                </div>
+                <p class="pixel-text link-label">Bonus</p>
+            </div>
+        </div>
+        <button class="nav-click-me" onclick="elevatorScroll('thanks')">
+            <span>Finish</span>
+            <div class="pixel-arrow"></div>
+        </button>
+    </section>
+
+    <!-- SECTION 4: THANK YOU MESSAGE -->
+    <footer class="footer-section" id="thanks">
+        <p class="pixel-text footer-text">
+            Thank you so much for Lookin around ! Hit me up on discord anytime ! 
+            <span class="blue-text">(Payment only on paypal at the moment)</span>
+        </p>
+        <button class="nav-click-me" style="margin-top:40px;" onclick="elevatorScroll('intro')">
+            <span>Back to Top</span>
+            <div class="pixel-arrow" style="transform: rotate(180deg);"></div>
+        </button>
+    </footer>
+
+    <!-- GALLERY MODAL -->
+    <div id="gallery-overlay" class="gallery-overlay">
+        <div class="gallery-container">
+            <div class="close-gallery" onclick="closeGallery()">[ CLOSE ]</div>
+            <button class="nav-btn" style="left: -80px;" onclick="changeImage(-1)"><</button>
+            <div id="gallery-loader" class="gallery-status" style="position:absolute;">LOADING...</div>
+            <img id="gallery-img" src="" alt="Gallery Image">
+            <button class="nav-btn" style="right: -80px;" onclick="changeImage(1)">></button>
+        </div>
+        <div id="gallery-counter" class="gallery-info" style="margin-top:20px; font-size:0.8rem; color:#aaa;">IMAGE 1 / 1</div>
+        <div id="gallery-message" style="margin-top:15px; font-size:0.7rem; color:#fff; text-shadow:2px 2px 0px #c31432;"></div>
+    </div>
+
+    <script>
+        // Reveal UI after intro
+        window.onload = () => {
+            setTimeout(() => {
+                const prompt = document.getElementById('scroll-prompt');
+                if (prompt) {
+                    prompt.classList.remove('hidden');
+                    prompt.classList.add('fade-in-ui');
+                }
+                document.body.style.overflowY = "auto";
+            }, 4000);
+        };
+
+        // --- THE ELEVATOR SCROLL ENGINE ---
+        function elevatorScroll(targetId) {
+            const target = document.getElementById(targetId);
+            if (!target) return;
+
+            const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            const duration = 1500; // Time in ms
+            let start = null;
+
+            function animation(currentTime) {
+                if (start === null) start = currentTime;
+                const timeElapsed = currentTime - start;
+                const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+                window.scrollTo(0, run);
+                if (timeElapsed < duration) requestAnimationFrame(animation);
+            }
+
+            function easeInOutQuad(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        // Background transition based on scroll position
+        window.onscroll = () => {
+            const scrollTotal = document.documentElement.scrollHeight - window.innerHeight;
+            if (scrollTotal <= 0) return;
+            const scrollPercent = (window.scrollY / scrollTotal) * 100;
+            document.body.style.backgroundPosition = `0% ${scrollPercent}%`;
+        };
+
+        // --- GALLERY ENGINE ---
+        const galleries = {
+            'pokemon': ['Pokemon/1.png', 'Pokemon/2.png', 'Pokemon/3.png', 'Pokemon/4.png', 'Pokemon/5.png'],
+            'commissions': ['Commissions/1.png', 'Commissions/2.png', 'Commissions/3.png', 'Commissions/4.png', 'Commissions/5.png'],
+            'silly': ['Silly/1.png', 'Silly/2.png', 'Silly/3.png', 'Silly/4.png'],
+            'fav': ['My_fav/1.png', 'My_fav/2.png', 'My_fav/3.png', 'My_fav/4.png', 'My_fav/5.png', 'My_fav/6.png'],
+            'bonus': ['Bonus/1.png', 'Bonus/2.png']
+        };
+
+        let currentGallery = [];
+        let currentIndex = 0;
+        let hasRetried = false; 
+
+        const imgElement = document.getElementById('gallery-img');
+        const loader = document.getElementById('gallery-loader');
+        const galleryMsg = document.getElementById('gallery-message');
+
+        imgElement.onload = () => {
+            loader.style.display = 'none';
+            imgElement.style.display = 'block';
+        };
+
+        imgElement.onerror = () => {
+            if (!hasRetried) {
+                hasRetried = true;
+                const currentSrc = imgElement.src;
+                let newSrc = currentSrc.endsWith('.png') ? currentSrc.replace('.png', '.gif') : currentSrc.replace('.gif', '.png');
+                imgElement.src = newSrc;
+                return;
+            }
+            loader.innerText = "FAILED TO LOAD";
+        };
+
+        function openGallery(category) {
+            currentGallery = galleries[category] || [];
+            if (currentGallery.length === 0) return;
+            currentIndex = 0;
+            galleryMsg.innerText = (category === 'bonus') ? "Guess what I made here !, dm me the answers if you can lol" : "";
+            updateGalleryUI();
+            document.getElementById('gallery-overlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeGallery() {
+            document.getElementById('gallery-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+        }
+
+        function changeImage(step) {
+            currentIndex = (currentIndex + step + currentGallery.length) % currentGallery.length;
+            updateGalleryUI();
+        }
+
+        function updateGalleryUI() {
+            hasRetried = false; 
+            imgElement.style.display = 'none';
+            loader.style.display = 'block';
+            loader.innerText = "LOADING...";
+            imgElement.src = currentGallery[currentIndex];
+            document.getElementById('gallery-counter').innerText = `IMAGE ${currentIndex + 1} / ${currentGallery.length}`;
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeGallery();
+            if (e.key === 'ArrowLeft') changeImage(-1);
+            if (e.key === 'ArrowRight') changeImage(1);
+        });
+    </script>
+</body>
+</html>

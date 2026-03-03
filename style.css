@@ -1,0 +1,157 @@
+/* --- CUSTOM PIXEL SCROLLBAR --- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #050408; }
+::-webkit-scrollbar-thumb { background: #4b2a6d; border: 2px solid #000; }
+::-webkit-scrollbar-thumb:hover { background: #6a3da1; }
+
+/* --- THE INFINITE VOID BACKGROUND --- */
+body {
+    background-color: #050408;
+    background-image: radial-gradient(circle at 50% 50%, rgba(75, 42, 109, 0.3) 0%, transparent 80%);
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    overflow-y: hidden; /* Script enables this after 4s */
+    position: relative;
+}
+
+/* Star Layer 1: Slow & Distant */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -2;
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+        radial-gradient(1px 1px at 150px 40px, #b388eb, transparent),
+        radial-gradient(1px 1px at 400px 100px, #fff, transparent);
+    background-size: 500px 500px;
+    animation: infiniteSpace 60s linear infinite;
+}
+
+/* Star Layer 2: Faster & Closer */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+    background-image: 
+        radial-gradient(2px 2px at 100px 150px, #fff, transparent),
+        radial-gradient(2px 2px at 300px 450px, #b388eb, transparent),
+        radial-gradient(2px 2px at 450px 200px, #fff, transparent);
+    background-size: 600px 600px;
+    filter: drop-shadow(0 0 5px rgba(179, 136, 235, 0.6));
+    animation: infiniteSpace 30s linear infinite;
+}
+
+@keyframes infiniteSpace {
+    from { background-position: 0 0; }
+    to { background-position: 0 -1000px; }
+}
+
+/* --- INTRO SECTION --- */
+.entrance-screen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.title-float {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    will-change: transform, opacity;
+    animation: initialFade 4s forwards, smooth-float 4s infinite ease-in-out 4s; 
+}
+
+.pixel-title {
+    color: #ffffff;
+    text-shadow: 6px 6px 0px #2a104a;
+    font-size: 3.5rem; 
+    line-height: 1.2;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin: 15px 0;
+}
+
+.gif-container { width: 180px; margin: 10px auto; }
+.pixel-gif { width: 100%; image-rendering: pixelated; display: block; }
+
+/* --- BUSINESS INFO SECTION --- */
+.info-section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.info-container {
+    text-align: center;
+    max-width: 900px;
+}
+
+.pixel-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #fff;
+    text-shadow: 4px 4px 0px #2a104a;
+    text-transform: uppercase;
+    margin: 20px 0;
+}
+
+.disclaimer-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.warning-symbol {
+    font-size: 2.5rem;
+    background: #2a104a;
+    color: #fff;
+    padding: 10px 25px;
+    border: 4px solid #fff;
+    box-shadow: 6px 6px 0px #000;
+    flex-shrink: 0;
+}
+
+/* --- UI ELEMENTS --- */
+#scroll-prompt {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.seamless-pixel-arrow {
+    width: 42px; height: 24px; background: #fff;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 25%, 85.7% 25%, 85.7% 50%, 71.4% 50%, 71.4% 75%, 57.1% 75%, 57.1% 100%, 42.8% 100%, 42.8% 75%, 28.5% 75%, 28.5% 50%, 14.2% 50%, 14.2% 25%, 0% 25%);
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes initialFade { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+@keyframes smooth-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+.hidden { opacity: 0; }
+.fade-in-arrow { opacity: 1; transition: opacity 1.5s ease-in; }
+
+/* --- RESPONSIVE TWEAKS --- */
+@media (max-width: 800px) {
+    .pixel-title { font-size: 1.8rem; letter-spacing: 4px; }
+    .gif-container { width: 120px; }
+    .pixel-text { font-size: 0.8rem; }
+    .disclaimer-row { flex-direction: column; gap: 15px; }
+    .warning-symbol { font-size: 1.5rem; padding: 5px 15px; }
+}
