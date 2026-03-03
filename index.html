@@ -7,26 +7,6 @@
     <!-- Google Fonts: Press Start 2P -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     
-    <!-- 0. BOOTSTRAP SCRIPTS: Defined at the top to fix ReferenceError -->
-    <script>
-        function handleImageError(img) {
-            const extensions = ['.png', '.gif', '.jpg', '.jpeg'];
-            const base = img.getAttribute('data-base') || img.src.substring(0, img.src.lastIndexOf('.'));
-            
-            if (typeof img.retryCount === 'undefined') img.retryCount = 0;
-            
-            if (img.retryCount < extensions.length) {
-                const nextExt = extensions[img.retryCount];
-                img.retryCount++;
-                // Try next extension
-                img.src = base + nextExt; 
-            } else {
-                img.onerror = null; 
-                img.parentElement.innerHTML = `<span style="font-size:10px; color:#ff5555;">[MISSING: ${base}]</span>`;
-            }
-        }
-    </script>
-
     <style>
         /* --- 1. CORE STYLES & CENTERING --- */
         html {
@@ -273,7 +253,7 @@
             margin-top: 20px;
         }
 
-        /* --- 7. GALLERY MODAL --- */
+        /* --- 7. GALLERY OVERLAY --- */
         .gallery-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -362,7 +342,7 @@
         <div class="hero-content title-float">
             <h1 class="pixel-title">GRIMM'S</h1>
             <div class="gif-container">
-                <img src="cat.gif" alt="Angy Catto" class="pixel-gif" data-base="cat" onerror="handleImageError(this)">
+                <img src="cat.gif" alt="Angy Catto" class="pixel-gif">
             </div>
             <h1 class="pixel-title">PORTFOLIO</h1>
         </div>
@@ -397,35 +377,35 @@
         <div class="links-grid">
             <div class="link-item" onclick="openGallery('pokemon')">
                 <div class="pixel-icon-container">
-                    <img src="pokemon.png" alt="Pokemon Art" class="custom-art" data-base="pokemon" onerror="handleImageError(this)">
+                    <img src="pokemon.png" alt="Pokemon Art" class="custom-art">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Pokemon</p>
             </div>
             
             <div class="link-item" onclick="openGallery('commissions')">
                 <div class="pixel-icon-container">
-                    <img src="commissions.png" alt="Commissions Art" class="custom-art" data-base="commissions" onerror="handleImageError(this)">
+                    <img src="commissions.png" alt="Commissions Art" class="custom-art">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Commisions</p>
             </div>
 
             <div class="link-item" onclick="openGallery('silly')">
                 <div class="pixel-icon-container">
-                    <img src="silly.png" alt="Silly Art" class="custom-art" data-base="silly" onerror="handleImageError(this)">
+                    <img src="silly.png" alt="Silly Art" class="custom-art">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Silly</p>
             </div>
 
             <div class="link-item" onclick="openGallery('fav')">
                 <div class="pixel-icon-container">
-                    <img src="fav.png" alt="Favorite Art" class="custom-art" data-base="fav" onerror="handleImageError(this)">
+                    <img src="fav.png" alt="Favorite Art" class="custom-art">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">My_fav</p>
             </div>
 
             <div class="link-item" onclick="openGallery('bonus')">
                 <div class="pixel-icon-container">
-                    <img src="bonus.png" alt="Bonus Art" class="custom-art" data-base="bonus" onerror="handleImageError(this)">
+                    <img src="bonus.png" alt="Bonus Art" class="custom-art">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Bonus</p>
             </div>
@@ -511,11 +491,11 @@
             document.body.style.backgroundPosition = `0% ${scrollPercent}%`;
         };
 
-        // --- GALLERY ENGINE ---
+        // --- HARDCODED GALLERY ENGINE ---
         const galleries = {
             'pokemon': ['Pokemon/1.png', 'Pokemon/2.png', 'Pokemon/3.png', 'Pokemon/4.png', 'Pokemon/5.png'],
-            'commissions': ['Commissions/1.png', 'Commissions/2.png', 'Commissions/3.png', 'Commissions/4.png', 'Commissions/5.png'],
-            'silly': ['Silly/1.png', 'Silly/2.png', 'Silly/3.png', 'Silly/4.png'],
+            'commissions': ['Commissions/1.gif', 'Commissions/2.png', 'Commissions/3.gif', 'Commissions/4.gif', 'Commissions/5.gif'],
+            'silly': ['Silly/1.png', 'Silly/2.png', 'Silly/3.png', 'Silly/4.gif'],
             'fav': ['My_fav/1.png', 'My_fav/2.png', 'My_fav/3.png', 'My_fav/4.png', 'My_fav/5.png', 'My_fav/6.png'],
             'bonus': ['Bonus/1.png', 'Bonus/2.png']
         };
@@ -532,38 +512,15 @@
             imgElement.style.display = 'block';
         };
 
-        // Custom Smart Error Handler for Gallery Images
+        // Simple error handler (no smart shit, just shows error)
         imgElement.onerror = function() {
-            const extensions = ['.png', '.gif', '.jpg', '.jpeg'];
-            const currentPath = currentGallery[currentIndex];
-            
-            if (!currentPath) return;
-            
-            // Get the base filename without extension
-            const lastDotIndex = currentPath.lastIndexOf('.');
-            const base = lastDotIndex !== -1 ? currentPath.substring(0, lastDotIndex) : currentPath;
-            
-            // Initialize retry index if not present
-            if (typeof this.retryIdx === 'undefined') this.retryIdx = 0;
-            
-            if (this.retryIdx < extensions.length) {
-                const nextExt = extensions[this.retryIdx];
-                this.retryIdx++;
-                imgElement.src = base + nextExt;
-            } else {
-                loader.innerText = "FAILED TO LOAD";
-                // Reset for next image attempt
-                this.retryIdx = 0; 
-            }
+            loader.innerText = "FAILED TO LOAD FILE: " + (currentGallery[currentIndex] || "Unknown");
         };
 
         function openGallery(category) {
             currentGallery = galleries[category] || [];
             if (currentGallery.length === 0) return;
             currentIndex = 0;
-            
-            // Reset state for new category
-            imgElement.retryIdx = 0; 
             
             galleryMsg.innerText = (category === 'bonus') ? "Guess what I made here !, dm me the answers if you can lol" : "";
             updateGalleryUI();
@@ -578,12 +535,7 @@
         }
 
         function changeImage(step) {
-            // Cycle through gallery
             currentIndex = (currentIndex + step + currentGallery.length) % currentGallery.length;
-            
-            // Reset retry logic for the new image index
-            imgElement.retryIdx = 0; 
-            
             updateGalleryUI();
         }
 
@@ -591,10 +543,7 @@
             imgElement.style.display = 'none';
             loader.style.display = 'block';
             loader.innerText = "LOADING PIXELS...";
-            
-            // Trigger the initial load for the current index
             imgElement.src = currentGallery[currentIndex];
-            
             document.getElementById('gallery-counter').innerText = `IMAGE ${currentIndex + 1} / ${currentGallery.length}`;
         }
 
