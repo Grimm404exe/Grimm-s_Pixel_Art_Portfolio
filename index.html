@@ -89,7 +89,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
-            margin: 0 auto; /* Ensure centering in blocks */
+            margin: 0 auto; 
         }
 
         .nav-click-me:hover {
@@ -342,7 +342,7 @@
         <div class="hero-content title-float">
             <h1 class="pixel-title">GRIMM'S</h1>
             <div class="gif-container">
-                <img src="cat.gif" alt="Angy Catto" class="pixel-gif">
+                <img src="./cat.gif" alt="Angy Catto" class="pixel-gif" onerror="this.style.display='none'; this.parentElement.innerHTML='MISSING cat.gif';">
             </div>
             <h1 class="pixel-title">PORTFOLIO</h1>
         </div>
@@ -377,35 +377,35 @@
         <div class="links-grid">
             <div class="link-item" onclick="openGallery('pokemon')">
                 <div class="pixel-icon-container">
-                    <img src="pokemon.png" alt="Pokemon Art" class="custom-art">
+                    <img src="./pokemon.png" alt="Pokemon Art" class="custom-art" onerror="this.style.opacity='0.5';">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Pokemon</p>
             </div>
             
             <div class="link-item" onclick="openGallery('commissions')">
                 <div class="pixel-icon-container">
-                    <img src="commissions.png" alt="Commissions Art" class="custom-art">
+                    <img src="./commissions.png" alt="Commissions Art" class="custom-art" onerror="this.style.opacity='0.5';">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Commisions</p>
             </div>
 
             <div class="link-item" onclick="openGallery('silly')">
                 <div class="pixel-icon-container">
-                    <img src="silly.png" alt="Silly Art" class="custom-art">
+                    <img src="./silly.png" alt="Silly Art" class="custom-art" onerror="this.style.opacity='0.5';">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Silly</p>
             </div>
 
             <div class="link-item" onclick="openGallery('fav')">
                 <div class="pixel-icon-container">
-                    <img src="fav.png" alt="Favorite Art" class="custom-art">
+                    <img src="./fav.png" alt="Favorite Art" class="custom-art" onerror="this.style.opacity='0.5';">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">My_fav</p>
             </div>
 
             <div class="link-item" onclick="openGallery('bonus')">
                 <div class="pixel-icon-container">
-                    <img src="bonus.png" alt="Bonus Art" class="custom-art">
+                    <img src="./bonus.png" alt="Bonus Art" class="custom-art" onerror="this.style.opacity='0.5';">
                 </div>
                 <p class="pixel-text link-label" style="font-size: 0.7rem;">Bonus</p>
             </div>
@@ -491,13 +491,13 @@
             document.body.style.backgroundPosition = `0% ${scrollPercent}%`;
         };
 
-        // --- HARDCODED GALLERY ENGINE ---
+        // --- HARDCODED GALLERY ENGINE (Case Sensitive for GitHub) ---
         const galleries = {
-            'pokemon': ['Pokemon/1.png', 'Pokemon/2.png', 'Pokemon/3.png', 'Pokemon/4.png', 'Pokemon/5.png'],
-            'commissions': ['Commissions/1.gif', 'Commissions/2.png', 'Commissions/3.gif', 'Commissions/4.gif', 'Commissions/5.gif'],
-            'silly': ['Silly/1.png', 'Silly/2.png', 'Silly/3.png', 'Silly/4.gif'],
-            'fav': ['My_fav/1.png', 'My_fav/2.png', 'My_fav/3.png', 'My_fav/4.png', 'My_fav/5.png', 'My_fav/6.png'],
-            'bonus': ['Bonus/1.png', 'Bonus/2.png']
+            'pokemon': ['./Pokemon/1.png', './Pokemon/2.png', './Pokemon/3.png', './Pokemon/4.png', './Pokemon/5.png'],
+            'commissions': ['./Commissions/1.gif', './Commissions/2.png', './Commissions/3.gif', './Commissions/4.gif', './Commissions/5.gif'],
+            'silly': ['./Silly/1.png', './Silly/2.png', './Silly/3.png', './Silly/4.gif'],
+            'fav': ['./My_fav/1.png', './My_fav/2.png', './My_fav/3.png', './My_fav/4.png', './My_fav/5.png', './My_fav/6.png'],
+            'bonus': ['./Bonus/1.png', './Bonus/2.png']
         };
 
         let currentGallery = [];
@@ -512,9 +512,11 @@
             imgElement.style.display = 'block';
         };
 
-        // Simple error handler (no smart shit, just shows error)
+        // Reporting error handler
         imgElement.onerror = function() {
-            loader.innerText = "FAILED TO LOAD FILE: " + (currentGallery[currentIndex] || "Unknown");
+            const failedPath = currentGallery[currentIndex] || "Unknown";
+            loader.innerText = "FAILED TO LOAD: " + failedPath;
+            console.error("GitHub could not find the file at: " + failedPath);
         };
 
         function openGallery(category) {
